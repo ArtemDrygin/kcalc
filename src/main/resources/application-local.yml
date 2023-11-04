@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5522/
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+    hikari:
+      schema: calculator
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+
+server:
+  port: 8082
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.hibernate.sql: debug
+    org.hibernate.descriptor.sql.BasicBinder: TRACE

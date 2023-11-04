@@ -1,0 +1,18 @@
+version: "3.8"
+
+volumes:
+  db:
+    driver: local
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    container_name: fit-calculator-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5522:5432'
+    volumes:
+      - db:/var/lib/postgresql/data

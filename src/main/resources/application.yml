@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: fit-calculator
+  profiles:
+    active: @activeProfiles@
