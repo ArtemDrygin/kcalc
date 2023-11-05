@@ -1,10 +1,10 @@
-package com.putanyname.fitcalculatorbackend;
+package com.putanyname.kcalc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CalculatorApplicationTests {
+class KCalcApplicationTests {
 
     @Test
     void contextLoads() {

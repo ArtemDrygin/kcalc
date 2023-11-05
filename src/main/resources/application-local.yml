@@ -13,7 +13,7 @@ spring:
     password: postgres
     driverClassName: org.postgresql.Driver
     hikari:
-      schema: calculator
+      schema: kcalc
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
     enabled: true

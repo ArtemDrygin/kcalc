@@ -1,5 +1,5 @@
 spring:
   application:
-    name: fit-calculator
+    name: kcalc
   profiles:
     active: @activeProfiles@
