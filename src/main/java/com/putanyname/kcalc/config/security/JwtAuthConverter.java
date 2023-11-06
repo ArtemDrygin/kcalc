@@ -1,9 +1,9 @@
 package com.putanyname.kcalc.config.security;
 
 
-import com.putanyname.kcalc.config.keycloak.KeycloakConfigurationProperties;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,37 +14,37 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
-
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-    private final KeycloakConfigurationProperties keycloakProperties;
+
+    @Value("${keycloak.clientId}")
+    private String clientId;
 
     @Override
     public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
-        Collection<GrantedAuthority> authorities = Stream.concat(
-                jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
-                extractResourceRoles(jwt)
-        ).collect(Collectors.toSet());
+        var authorities = extractResourceAccessRoles(jwt);
+        authorities.addAll(extractScopeAuthorities(jwt));
 
         return new JwtAuthenticationToken(jwt, authorities, getPrincipalClaimName(jwt));
     }
 
-    private Stream<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
+    private Set<GrantedAuthority> extractResourceAccessRoles(Jwt jwt) {
         return Optional.ofNullable(jwt.<Map<String, Object>>getClaim("resource_access"))
-                .map(resource -> ((Map<String, Object>) resource.get(keycloakProperties.getClientId())))
+                .map(resource -> ((Map<String, Object>) resource.get(clientId)))
                 .map(resourceRoles -> ((Collection<String>) resourceRoles.get("roles")))
                 .orElse(Collections.emptySet())
                 .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role));
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toSet());
+    }
+
+    private Collection<GrantedAuthority> extractScopeAuthorities(Jwt jwt) {
+        return jwtGrantedAuthoritiesConverter.convert(jwt);
     }
 
     private String getPrincipalClaimName(Jwt jwt) {
