@@ -10,6 +10,7 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -19,7 +20,8 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KeycloakInitializer implements CommandLineRunner {
+@Profile("local")
+class KeycloakInitializer implements CommandLineRunner {
 
     private final Keycloak keycloakAdmin;
     private final KeycloakConfigurationProperties keycloakProperties;
