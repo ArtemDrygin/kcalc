@@ -7,10 +7,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8443/realms/kcalc-realm
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   datasource:
-    url: jdbc:postgresql://localhost:5522/kcalc
-    username: kcalc
-    password: kcalc
+    url: jdbc:postgresql://localhost:5432/kcalc
+    username: postgres
+    password: postgres
     driverClassName: org.postgresql.Driver
     hikari:
       schema: kcalc
@@ -26,3 +32,15 @@ logging:
     org.springframework.security: DEBUG
     org.hibernate.sql: debug
     org.hibernate.descriptor.sql.BasicBinder: TRACE
+
+keycloak:
+  serverUrl: http://localhost:8443
+  realmName: kcalc-realm
+  clientId: kcalc-keycloak-client
+  redirectUrl: http://localhost:3000
+  adminUsername: admin
+  adminPassword: admin
+
+security:
+  cors:
+    allowed-origins: http://localhost:3000

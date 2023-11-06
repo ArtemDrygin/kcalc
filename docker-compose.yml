@@ -12,10 +12,10 @@ services:
     restart: always
     container_name: kcalc-postgres
     environment:
-      POSTGRES_USER: kcalc
-      POSTGRES_PASSWORD: kcalc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - '5522:5432'
+      - '5432:5432'
     volumes:
       - kcalc-postgres:/var/lib/postgresql/data
 
