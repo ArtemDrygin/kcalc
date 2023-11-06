@@ -8,9 +8,9 @@ spring:
       hibernate:
         format_sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5522/
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5522/kcalc
+    username: kcalc
+    password: kcalc
     driverClassName: org.postgresql.Driver
     hikari:
       schema: kcalc
