@@ -17,7 +17,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-
     private final JwtAuthConverter jwtAuthConverter;
 
     @Bean
