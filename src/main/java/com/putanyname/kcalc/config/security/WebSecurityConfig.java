@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -20,7 +21,7 @@ public class WebSecurityConfig {
     private final JwtAuthConverter jwtAuthConverter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, PostLoginFilter postLoginFilter) throws Exception {
         return http
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -39,6 +40,7 @@ public class WebSecurityConfig {
                         )
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS))
+                .addFilterAfter(postLoginFilter, BearerTokenAuthenticationFilter.class)
                 .build();
     }
 }

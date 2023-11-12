@@ -2,7 +2,7 @@ create table settings
 (
     id bigserial primary key,
     user_id uuid not null,
-    daily_calorie_goal integer not null default 1800,
+    daily_calorie_goal smallint not null default 1800,
     created_at timestamp not null,
     updated_at timestamp not null
 );
